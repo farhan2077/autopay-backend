@@ -23,7 +23,10 @@ export async function getAllVehicles(
     });
   } catch (error) {
     console.log(error);
-    return res.status(500).json("Error fetching all vehicles!");
+    return res.status(500).json({
+      success: false,
+      error: "Error fetching all vehicles!",
+    });
   }
 }
 
@@ -64,6 +67,9 @@ export async function createVehicle(
     // }
   } catch (error) {
     console.log(error);
-    return res.status(500).json("Error adding new vehicle!");
+    return res.status(500).json({
+      success: false,
+      error: "Error adding new vehicle!",
+    });
   }
 }
