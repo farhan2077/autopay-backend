@@ -5,3 +5,9 @@ export {
   getVehicle as getVehicleController,
   deleteVehicle as deleteVehicleController,
 } from "./vehicles.controller";
+
+export {
+  getAllUsers as getAllUsersController,
+  addUser as addUserController,
+  deleteUser as deleteUserController,
+} from "./users.controller";
