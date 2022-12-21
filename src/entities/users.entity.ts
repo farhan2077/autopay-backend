@@ -1,13 +1,6 @@
-import {
-  Entity,
-  PrimaryGeneratedColumn,
-  Column,
-  ManyToOne,
-  OneToMany,
-  CreateDateColumn,
-} from "typeorm";
+import { Entity, PrimaryGeneratedColumn, Column, OneToMany } from "typeorm";
 
-import { Vehicle, Transaction } from "../entities";
+import { Transaction } from ".";
 
 @Entity("users")
 export class User {
@@ -18,22 +11,14 @@ export class User {
   name!: string;
 
   @Column()
-  address!: string;
-
-  @Column()
-  phone!: string;
-
-  @Column("float")
   balance!: number;
 
-  @ManyToOne(() => Vehicle, (vehicle) => vehicle.user)
-  vehicleType!: Vehicle;
+  @Column()
+  vehicleType!: string;
+
+  @Column("float")
+  tollRate!: number;
 
   @OneToMany(() => Transaction, (transaction) => transaction.user)
   transaction!: Transaction[];
-
-  @CreateDateColumn({
-    type: "date",
-  })
-  createdAt!: Date;
 }
