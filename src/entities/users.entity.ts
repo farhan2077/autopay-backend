@@ -1,6 +1,6 @@
 import { Entity, PrimaryGeneratedColumn, Column, OneToMany } from "typeorm";
 
-import { Transaction } from ".";
+import { Transaction } from "../entities";
 
 @Entity("users")
 export class User {
@@ -11,10 +11,19 @@ export class User {
   name!: string;
 
   @Column()
+  address!: string;
+
+  @Column()
+  phone!: number;
+
+  @Column()
   balance!: number;
 
   @Column()
   vehicleType!: string;
+
+  @Column()
+  vehicleId!: string;
 
   @Column("float")
   tollRate!: number;
