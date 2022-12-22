@@ -1,16 +1,25 @@
 import express = require("express");
-const usersRouter = express.Router();
+const userRouter = express.Router();
 
 import {
   getAllUsersController,
+  getUserController,
+  getUserTransactionController,
   addUserController,
+  updateUserController,
   deleteUserController,
 } from "../controllers";
 
 // baseUrl/users
-usersRouter.route("/").get(getAllUsersController).post(addUserController);
+userRouter.route("/").get(getAllUsersController).post(addUserController);
 
-// baseUrl/users/:userId
-usersRouter.route("/:userId").delete(deleteUserController);
+// baseUrl/vehicles/:userId
+userRouter
+  .route("/:userId")
+  .get(getUserController)
+  .put(updateUserController)
+  .delete(deleteUserController);
 
-export default usersRouter;
+userRouter.route("/transaction/:vehicleId").get(getUserTransactionController);
+
+export default userRouter;

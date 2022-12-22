@@ -12,8 +12,8 @@ datasource
   .then(() => {
     console.log("Data Source has been initialized!");
   })
-  .catch((err) => {
-    console.error("Error during Data Source initialization:", err);
+  .catch((error) => {
+    console.error("Error during Data Source initialization:", error);
   });
 
 const app = express();
@@ -46,5 +46,5 @@ const port = process.env.PORT || 4000;
 
 app.listen(port, () => {
   debug(`Backend app listening at http://localhost:${port}`);
-  console.info("Happy plant backend has started");
+  console.info("Backend server has started");
 });

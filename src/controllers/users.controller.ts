@@ -1,4 +1,5 @@
 import express = require("express");
+
 import { datasource } from "../utils/datasource";
 import { User } from "../entities";
 
@@ -6,10 +7,20 @@ import { User } from "../entities";
 export async function getAllUsers(req: express.Request, res: express.Response) {
   try {
     const usersRepository = datasource.getRepository(User);
-
     const users = await usersRepository.find({
-      select: ["id", "name", "address", "phone", "balance"],
-      relations: ["vehicleType"],
+      select: {
+        id: true,
+        name: true,
+        address: true,
+        phone: true,
+        balance: true,
+        vehicleType: true,
+        vehicleId: true,
+        tollRate: true,
+      },
+      relations: {
+        transaction: true,
+      },
     });
 
     return res.status(200).json({
@@ -18,10 +29,92 @@ export async function getAllUsers(req: express.Request, res: express.Response) {
       data: users,
     });
   } catch (error) {
-    console.log(error);
+    console.error(error);
+
     return res.status(500).json({
       success: false,
-      error: "Error fetching all users!",
+      message: "Something want wrong!",
+    });
+  }
+}
+
+// @GET - baseUrl/users/:usersId
+export async function getUser(req: express.Request, res: express.Response) {
+  try {
+    const usersRepository = datasource.getRepository(User);
+    const userId = req.params.userId;
+    const user = await usersRepository.findOneBy({
+      id: userId,
+    });
+
+    if (!user) {
+      return res.status(400).json({
+        success: false,
+        message: "User not found",
+      });
+    }
+
+    return res.status(200).json({
+      success: true,
+      message: "User info found",
+      data: user,
+    });
+  } catch (error) {
+    console.error(error);
+
+    return res.status(500).json({
+      success: false,
+      message: "Something want wrong!",
+    });
+  }
+}
+
+// @GET - baseUrl/transaction/:vehicleId
+export async function getUserTransaction(
+  req: express.Request,
+  res: express.Response
+) {
+  try {
+    const usersRepository = datasource.getRepository(User);
+    const vehicleId = req.params.vehicleId;
+
+    const user = await usersRepository.find({
+      select: {
+        id: true,
+        name: true,
+        address: true,
+        phone: true,
+        balance: true,
+        vehicleType: true,
+        vehicleId: true,
+        tollRate: true,
+      },
+      relations: {
+        transaction: true,
+      },
+      where: {
+        vehicleId: vehicleId,
+      },
+    });
+
+    if (!user || !vehicleId) {
+      return res.status(400).json({
+        success: false,
+        message: "User not found",
+      });
+    }
+
+    return res.status(200).json({
+      success: true,
+      message: "User info found",
+      data: user,
+    });
+  } catch (error) {
+    console.error(error);
+
+    return res.status(500).json({
+      success: false,
+      message: "Something want wrong!",
     });
   }
 }
@@ -29,58 +122,96 @@ export async function getAllUsers(req: express.Request, res: express.Response) {
 // @POST - baseUrl/users
 export async function addUser(req: express.Request, res: express.Response) {
   try {
-    const { name, address, phone, balance, vehicleType } = req.body;
-
     const usersRepository = datasource.getRepository(User);
-
-    const user = await usersRepository.findOneBy({
-      name: name,
-    });
-
-    if (user) {
-      return res.status(400).json({
-        success: false,
-        error: "User already exists!",
-      });
-    }
+    const { name, address, phone, balance, vehicleType, vehicleId, tollRate } =
+      req.body;
 
     const newUser = new User();
     newUser.name = name;
     newUser.address = address;
     newUser.phone = phone;
     newUser.balance = balance;
-    if (vehicleType) {
-      newUser.vehicleType = vehicleType;
-    }
+    newUser.vehicleType = vehicleType;
+    newUser.vehicleId = vehicleId;
+    newUser.tollRate = tollRate;
 
     await usersRepository.save(newUser);
 
     return res.status(200).json({
       success: true,
-      message: "New user added.",
+      message: "New user added",
+      data: newUser,
     });
   } catch (error) {
     console.error(error);
+
     return res.status(500).json({
       success: false,
-      error: "New user could not be added!",
+      message: "Something want wrong!",
     });
   }
 }
 
-// @DELETE - baseUrl/users/userId
-export async function deleteUser(req: express.Request, res: express.Response) {
-  const userId = req.params.userId;
-
+// @PUT - baseUrl/users/:userId
+export async function updateUser(req: express.Request, res: express.Response) {
   try {
     const usersRepository = datasource.getRepository(User);
-
+    const userId = req.params.userId;
     const user = await usersRepository.findOneBy({
       id: userId,
     });
 
     if (!user) {
-      return res.status(400).json({ success: false, error: "User not found" });
+      return res.status(400).json({
+        success: false,
+        message: "User not found",
+      });
+    }
+
+    const { name, address, phone, balance, vehicleType, vehicleId, tollRate } =
+      req.body;
+
+    const newUser = new User();
+    newUser.name = name;
+    newUser.address = address;
+    newUser.phone = phone;
+    newUser.balance = balance;
+    newUser.vehicleType = vehicleType;
+    newUser.vehicleId = vehicleId;
+    newUser.tollRate = tollRate;
+
+    usersRepository.merge(user, newUser);
+    const result = await usersRepository.save(user);
+
+    return res.status(200).json({
+      success: true,
+      message: "User info updated",
+      data: result,
+    });
+  } catch (error) {
+    console.error(error);
+
+    return res.status(500).json({
+      success: false,
+      message: "Something want wrong!",
+    });
+  }
+}
+
+// @DELETE - baseUrl/users/:userId
+export async function deleteUser(req: express.Request, res: express.Response) {
+  try {
+    const usersRepository = datasource.getRepository(User);
+    const userId = req.params.userId;
+    const user = await usersRepository.findOneBy({
+      id: userId,
+    });
+
+    if (!user) {
+      return res.status(400).json({
+        success: false,
+        message: "User not found",
+      });
     }
 
     usersRepository.delete(user);
@@ -91,9 +222,10 @@ export async function deleteUser(req: express.Request, res: express.Response) {
     });
   } catch (error) {
     console.error(error);
+
     return res.status(500).json({
       success: false,
-      error: "Something went wrong",
+      message: "Something want wrong!",
     });
   }
 }

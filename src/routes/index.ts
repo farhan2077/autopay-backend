@@ -1,11 +1,11 @@
 import { Router } from "express";
 
-import vehiclesRouter from "./vehicles.routes";
 import usersRouter from "./users.routes";
+import transactionsRouter from "./transactions.routes";
 
 const router = Router();
 
-router.use("/vehicles", vehiclesRouter);
 router.use("/users", usersRouter);
+router.use("/transactions", transactionsRouter);
 
 export default router;
