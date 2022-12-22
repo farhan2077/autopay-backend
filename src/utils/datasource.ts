@@ -6,6 +6,7 @@ export const datasource = new DataSource({
   type: "sqlite",
   database: "./db/sqlite",
   entities: [User, Transaction],
-  logging: true,
+  logging: ["error", "schema"],
+  logger: "advanced-console",
   synchronize: true,
 });
