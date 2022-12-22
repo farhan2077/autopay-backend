@@ -28,6 +28,8 @@ export class User {
   @Column("float")
   tollRate!: number;
 
-  @OneToMany(() => Transaction, (transaction) => transaction.user)
+  @OneToMany(() => Transaction, (transaction) => transaction.user, {
+    cascade: true,
+  })
   transaction!: Transaction[];
 }

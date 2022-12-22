@@ -16,7 +16,9 @@ export class Transaction {
   @Column()
   paymentStatus!: string;
 
-  @ManyToOne(() => User, (user) => user.transaction)
+  @ManyToOne(() => User, (user) => user.transaction, {
+    onDelete: "CASCADE",
+  })
   user!: User;
 
   @CreateDateColumn({
