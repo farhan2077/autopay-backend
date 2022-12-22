@@ -1,6 +1,7 @@
 export {
   getAllUsers as getAllUsersController,
   getUser as getUserController,
+  getUserTransaction as getUserTransactionController,
   addUser as addUserController,
   updateUser as updateUserController,
   deleteUser as deleteUserController,
@@ -9,5 +10,4 @@ export {
 export {
   getAllTransactions as getAllTransactionsController,
   addTransaction as addTransactionController,
-  deleteTransaction as deleteTransactionController,
 } from "./transactions.controller";

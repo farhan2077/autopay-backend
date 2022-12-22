@@ -14,7 +14,7 @@ export class User {
   address!: string;
 
   @Column()
-  phone!: number;
+  phone!: string;
 
   @Column()
   balance!: number;

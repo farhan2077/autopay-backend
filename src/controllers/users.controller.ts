@@ -8,17 +8,19 @@ export async function getAllUsers(req: express.Request, res: express.Response) {
   try {
     const usersRepository = datasource.getRepository(User);
     const users = await usersRepository.find({
-      select: [
-        "id",
-        "name",
-        "address",
-        "phone",
-        "balance",
-        "vehicleType",
-        "vehicleId",
-        "tollRate",
-      ],
-      relations: ["transaction"],
+      select: {
+        id: true,
+        name: true,
+        address: true,
+        phone: true,
+        balance: true,
+        vehicleType: true,
+        vehicleId: true,
+        tollRate: true,
+      },
+      relations: {
+        transaction: true,
+      },
     });
 
     return res.status(200).json({
@@ -46,6 +48,56 @@ export async function getUser(req: express.Request, res: express.Response) {
     });
 
     if (!user) {
+      return res.status(400).json({
+        success: false,
+        message: "User not found",
+      });
+    }
+
+    return res.status(200).json({
+      success: true,
+      message: "User info found",
+      data: user,
+    });
+  } catch (error) {
+    console.error(error);
+
+    return res.status(500).json({
+      success: false,
+      message: "Something want wrong!",
+    });
+  }
+}
+
+// @GET - baseUrl/transaction/:vehicleId
+export async function getUserTransaction(
+  req: express.Request,
+  res: express.Response
+) {
+  try {
+    const usersRepository = datasource.getRepository(User);
+    const vehicleId = req.params.vehicleId;
+
+    const user = await usersRepository.find({
+      select: {
+        id: true,
+        name: true,
+        address: true,
+        phone: true,
+        balance: true,
+        vehicleType: true,
+        vehicleId: true,
+        tollRate: true,
+      },
+      relations: {
+        transaction: true,
+      },
+      where: {
+        vehicleId: vehicleId,
+      },
+    });
+
+    if (!user || !vehicleId) {
       return res.status(400).json({
         success: false,
         message: "User not found",

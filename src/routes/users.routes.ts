@@ -4,6 +4,7 @@ const userRouter = express.Router();
 import {
   getAllUsersController,
   getUserController,
+  getUserTransactionController,
   addUserController,
   updateUserController,
   deleteUserController,
@@ -18,5 +19,7 @@ userRouter
   .get(getUserController)
   .put(updateUserController)
   .delete(deleteUserController);
+
+userRouter.route("/transaction/:vehicleId").get(getUserTransactionController);
 
 export default userRouter;

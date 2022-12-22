@@ -4,14 +4,12 @@ const transactionRouter = express.Router();
 import {
   getAllTransactionsController,
   addTransactionController,
-  deleteTransactionController,
 } from "../controllers";
 
 // baseUrl/transactions
 transactionRouter
   .route("/")
   .get(getAllTransactionsController)
-  .post(addTransactionController)
-  .delete(deleteTransactionController);
+  .post(addTransactionController);
 
 export default transactionRouter;

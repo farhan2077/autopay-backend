@@ -1,4 +1,5 @@
 import express = require("express");
+
 import { datasource } from "../utils/datasource";
 import { Transaction, User } from "../entities";
 
@@ -12,6 +13,9 @@ export async function getAllTransactions(
     const transactions = await transactionsRepository.find({
       select: ["createdAt", "paymentStatus"],
       relations: ["user"],
+      order: {
+        createdAt: "DESC",
+      },
     });
 
     return res.status(200).json({
@@ -23,7 +27,7 @@ export async function getAllTransactions(
     console.error(error);
     return res.status(500).json({
       success: false,
-      error: "Error fetching all transactions!",
+      error: "Swomthing went wrong",
     });
   }
 }
@@ -34,13 +38,11 @@ export async function addTransaction(
   res: express.Response
 ) {
   try {
-    const { userId } = req.body;
-
     const usersRepository = datasource.getRepository(User);
     const transactionsRepository = datasource.getRepository(Transaction);
-
+    const { vehicleId } = req.body;
     const user = await usersRepository.findOneBy({
-      id: userId,
+      vehicleId: vehicleId,
     });
 
     if (!user) {
@@ -50,9 +52,21 @@ export async function addTransaction(
       });
     }
 
+    if (user.balance < user.tollRate) {
+      const newTransaction = new Transaction();
+      newTransaction.user = user;
+      newTransaction.paymentStatus = "declined";
+
+      await transactionsRepository.save(newTransaction);
+
+      return res.status(200).json({
+        success: true,
+        message: "Transaction is declined due to low balance",
+      });
+    }
+
     const newTransaction = new Transaction();
-    newTransaction.user = userId;
-    // newTransaction.paidAmount = user.vehicle.tollRate;
+    newTransaction.user = user;
     newTransaction.paymentStatus = "paid";
 
     await transactionsRepository.save(newTransaction);
@@ -63,24 +77,10 @@ export async function addTransaction(
     });
   } catch (error) {
     console.error(error);
-    return res.status(500).json({
-      success: false,
-      error: "Something went wrong!",
-    });
-  }
-}
 
-// @DELETE - baseUrl/transactions
-export async function deleteTransaction(
-  req: express.Request,
-  res: express.Response
-) {
-  try {
-  } catch (error) {
-    console.log(error);
     return res.status(500).json({
       success: false,
-      error: "Something went wrong!",
+      error: "Something went wrong",
     });
   }
 }
