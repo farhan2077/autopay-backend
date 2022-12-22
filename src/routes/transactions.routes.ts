@@ -3,6 +3,7 @@ const transactionRouter = express.Router();
 
 import {
   getAllTransactionsController,
+  getUserTransactionController,
   addTransactionController,
 } from "../controllers";
 
@@ -11,5 +12,7 @@ transactionRouter
   .route("/")
   .get(getAllTransactionsController)
   .post(addTransactionController);
+
+transactionRouter.route("/:vehicleId").get(getUserTransactionController);
 
 export default transactionRouter;
