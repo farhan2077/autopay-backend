@@ -32,8 +32,8 @@ export async function getAllTransactions(
   }
 }
 
-// @GET - baseUrl/transaction/:vehicleId
-export async function getUserTransaction(
+// @GET - baseUrl/transactions/:vehicleId
+export async function getTransaction(
   req: express.Request,
   res: express.Response
 ) {
@@ -41,7 +41,7 @@ export async function getUserTransaction(
     const usersRepository = datasource.getRepository(User);
     const vehicleId = req.params.vehicleId;
 
-    const user = await usersRepository.find({
+    const user = await usersRepository.findOne({
       select: {
         id: true,
         name: true,
@@ -60,10 +60,10 @@ export async function getUserTransaction(
       },
     });
 
-    if (!user || !vehicleId) {
+    if (!user) {
       return res.status(400).json({
         success: false,
-        message: "User not found",
+        message: "Vehicle not found",
       });
     }
 

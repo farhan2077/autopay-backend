@@ -8,6 +8,6 @@ export {
 
 export {
   getAllTransactions as getAllTransactionsController,
-  getUserTransaction as getUserTransactionController,
+  getTransaction as getTransactionController,
   addTransaction as addTransactionController,
 } from "./transactions.controller";
