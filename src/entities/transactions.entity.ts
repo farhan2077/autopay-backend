@@ -6,7 +6,7 @@ import {
   ManyToOne,
 } from "typeorm";
 
-import { User, Vehicle } from "../entities";
+import { User } from "../entities";
 
 @Entity("transactions")
 export class Transaction {
@@ -16,10 +16,9 @@ export class Transaction {
   @Column()
   paymentStatus!: string;
 
-  @Column("float")
-  tollRate!: number;
-
-  @ManyToOne(() => User, (user) => user.transaction)
+  @ManyToOne(() => User, (user) => user.transaction, {
+    onDelete: "CASCADE",
+  })
   user!: User;
 
   @CreateDateColumn({
