@@ -20,19 +20,25 @@
 git clone https://github.com/farhan2077/swiftpay-backend
 ```
 
-2. Install dependencies
+2. Move into the directory
+
+```sh
+cd swiftpay-backend
+```
+
+3. Install dependencies
 
 ```sh
 yarn
 ```
 
-3. Add environment vaariable(s)
+4. Add environment variable(s)
 
 ```sh
 PORT=
 ```
 
-1. Run backend
+5. Run backend
 
 ```sh
 yarn start:dev # start local development server
