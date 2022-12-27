@@ -58,18 +58,23 @@ export async function getTransaction(
       where: {
         vehicleId: vehicleId,
       },
+      order: {
+        transaction: {
+          createdAt: "DESC",
+        },
+      },
     });
 
     if (!user) {
       return res.status(400).json({
         success: false,
-        message: "Vehicle not found",
+        message: "Vehicle Id is not correct",
       });
     }
 
     return res.status(200).json({
       success: true,
-      message: "User info found",
+      message: "Vehicle info found",
       data: user,
     });
   } catch (error) {

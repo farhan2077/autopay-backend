@@ -25,4 +25,7 @@ export class Transaction {
     type: "date",
   })
   createdAt!: Date;
+
+  // @CreateDateColumn()
+  // createdAt!: Date;
 }
