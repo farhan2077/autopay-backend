@@ -197,7 +197,7 @@ export async function updateUserBalance(
     if (!user) {
       return res.status(400).json({
         success: false,
-        message: "User not found",
+        message: "Vehicle is not registered",
       });
     }
 
@@ -209,7 +209,7 @@ export async function updateUserBalance(
 
     return res.status(200).json({
       success: true,
-      message: "User balance updated",
+      message: "Toll has been deducted from user balance",
       data: result,
     });
   } catch (error) {

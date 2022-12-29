@@ -101,7 +101,7 @@ export async function addTransaction(
     });
 
     if (!user) {
-      return res.status(400).json({
+      return res.status(404).json({
         success: false,
         error: "Vehicle is not registered",
       });
@@ -114,7 +114,7 @@ export async function addTransaction(
 
       await transactionsRepository.save(newTransaction);
 
-      return res.status(200).json({
+      return res.status(400).json({
         success: true,
         message: "Transaction is declined due to low balance",
       });
