@@ -179,3 +179,45 @@ export async function deleteUser(req: express.Request, res: express.Response) {
     });
   }
 }
+
+// @PATCH - baseUrl/users/balance/update
+// @PATCH - baseUrl/users/:userId/balance/update
+export async function updateUserBalance(
+  req: express.Request,
+  res: express.Response
+) {
+  try {
+    const usersRepository = datasource.getRepository(User);
+
+    const { vehicleId } = req.body;
+    const user = await usersRepository.findOneBy({
+      vehicleId: vehicleId,
+    });
+
+    if (!user) {
+      return res.status(400).json({
+        success: false,
+        message: "User not found",
+      });
+    }
+
+    const newUser = new User();
+    newUser.balance = user.balance - user.tollRate;
+
+    usersRepository.merge(user, newUser);
+    const result = await usersRepository.save(user);
+
+    return res.status(200).json({
+      success: true,
+      message: "User balance updated",
+      data: result,
+    });
+  } catch (error) {
+    console.error(error);
+
+    return res.status(500).json({
+      success: false,
+      message: "Something want wrong!",
+    });
+  }
+}

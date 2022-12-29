@@ -6,6 +6,7 @@ import {
   getUserController,
   addUserController,
   updateUserController,
+  updateUserBalanceController,
   deleteUserController,
 } from "../controllers";
 
@@ -18,5 +19,8 @@ userRouter
   .get(getUserController)
   .put(updateUserController)
   .delete(deleteUserController);
+
+// baseUrl/user/balance/update
+userRouter.route("/balance/update").patch(updateUserBalanceController);
 
 export default userRouter;

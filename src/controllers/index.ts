@@ -4,6 +4,7 @@ export {
   addUser as addUserController,
   updateUser as updateUserController,
   deleteUser as deleteUserController,
+  updateUserBalance as updateUserBalanceController,
 } from "./users.controller";
 
 export {
