@@ -11,4 +11,5 @@ export {
   getAllTransactions as getAllTransactionsController,
   getTransaction as getTransactionController,
   addTransaction as addTransactionController,
+  getLastTransactionStatusOfUser as getLastTransactionStatusOfUserController,
 } from "./transactions.controller";
