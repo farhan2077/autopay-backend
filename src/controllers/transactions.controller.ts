@@ -103,7 +103,7 @@ export async function addTransaction(
     if (!user) {
       return res.status(400).json({
         success: false,
-        error: "User not found",
+        error: "Vehicle is not registered",
       });
     }
 
