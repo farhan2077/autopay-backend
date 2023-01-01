@@ -5,7 +5,6 @@ import {
   getAllTransactionsController,
   getTransactionController,
   addTransactionController,
-  getLastTransactionStatusOfUserController,
 } from "../controllers";
 
 // baseUrl/transactions
@@ -15,7 +14,5 @@ transactionRouter
   .post(addTransactionController);
 
 transactionRouter.route("/:vehicleId").get(getTransactionController);
-
-transactionRouter.route("/last").get(getLastTransactionStatusOfUserController);
 
 export default transactionRouter;
