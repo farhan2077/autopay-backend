@@ -36,7 +36,7 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
     }
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.getLastTransactionStatusOfUser = exports.addTransaction = exports.getTransaction = exports.getAllTransactions = void 0;
+exports.addTransaction = exports.getTransaction = exports.getAllTransactions = void 0;
 var datasource_1 = require("../utils/datasource");
 var entities_1 = require("../entities");
 // @GET - baseUrl/transactions
@@ -191,52 +191,3 @@ function addTransaction(req, res) {
     });
 }
 exports.addTransaction = addTransaction;
-// @GET - baseUrl/transactions/last
-// Check last transaction status of a user
-function getLastTransactionStatusOfUser(req, res) {
-    return __awaiter(this, void 0, void 0, function () {
-        var vehicleId, transactionsRepository, lastTransaction, error_4;
-        return __generator(this, function (_a) {
-            switch (_a.label) {
-                case 0:
-                    _a.trys.push([0, 2, , 3]);
-                    vehicleId = req.body.vehicleId;
-                    transactionsRepository = datasource_1.datasource.getRepository(entities_1.Transaction);
-                    return [4 /*yield*/, transactionsRepository.find({
-                            select: {
-                                id: true,
-                                createdAt: true,
-                            },
-                            relations: {
-                                user: true,
-                            },
-                            order: {
-                                createdAt: "DESC",
-                            },
-                            where: {
-                                user: {
-                                    vehicleId: vehicleId,
-                                },
-                            },
-                            take: 1,
-                        })];
-                case 1:
-                    lastTransaction = _a.sent();
-                    return [2 /*return*/, res.status(200).json({
-                            success: true,
-                            message: "Last plant reading found",
-                            data: lastTransaction,
-                        })];
-                case 2:
-                    error_4 = _a.sent();
-                    console.error(error_4);
-                    return [2 /*return*/, res.status(500).json({
-                            success: false,
-                            error: "Something went wrong",
-                        })];
-                case 3: return [2 /*return*/];
-            }
-        });
-    });
-}
-exports.getLastTransactionStatusOfUser = getLastTransactionStatusOfUser;

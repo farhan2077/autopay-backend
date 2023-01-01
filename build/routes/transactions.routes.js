@@ -9,5 +9,4 @@ transactionRouter
     .get(controllers_1.getAllTransactionsController)
     .post(controllers_1.addTransactionController);
 transactionRouter.route("/:vehicleId").get(controllers_1.getTransactionController);
-transactionRouter.route("/last").get(controllers_1.getLastTransactionStatusOfUserController);
 exports.default = transactionRouter;
