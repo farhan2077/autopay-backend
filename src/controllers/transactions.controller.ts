@@ -11,7 +11,7 @@ export async function getAllTransactions(
   try {
     const transactionsRepository = datasource.getRepository(Transaction);
     const transactions = await transactionsRepository.find({
-      select: ["createdAt", "paymentStatus"],
+      select: ["id", "createdAt", "paymentStatus"],
       relations: ["user"],
       order: {
         createdAt: "DESC",
@@ -39,7 +39,7 @@ export async function getTransaction(
 ) {
   try {
     const usersRepository = datasource.getRepository(User);
-    const vehicleId = req.params.vehicleId;
+    const vehicleId = req.params.id;
 
     const user = await usersRepository.findOne({
       select: {
@@ -136,6 +136,41 @@ export async function addTransaction(
     return res.status(500).json({
       success: false,
       error: "Something went wrong",
+    });
+  }
+}
+
+// @DELETE - baseUrl/transactions/:transactionId
+export async function deleteTransaction(
+  req: express.Request,
+  res: express.Response
+) {
+  try {
+    const transactionsRepository = datasource.getRepository(Transaction);
+    const transactionId = req.params.id;
+    const transaction = await transactionsRepository.findOneBy({
+      id: transactionId,
+    });
+
+    if (!transaction) {
+      return res.status(400).json({
+        success: false,
+        message: "Transaction not found",
+      });
+    }
+
+    transactionsRepository.delete(transaction);
+
+    return res.status(200).json({
+      success: true,
+      message: "Transaction deleted",
+    });
+  } catch (error) {
+    console.error(error);
+
+    return res.status(500).json({
+      success: false,
+      message: "Something want wrong!",
     });
   }
 }
