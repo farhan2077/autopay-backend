@@ -32,11 +32,7 @@ cd swiftpay-backend
 yarn
 ```
 
-4. Add environment variable(s)
-
-```sh
-PORT=
-```
+4. Add environment variable **.env** file similar to [.env.example](https://github.com/farhan2077/swiftpay-backend/blob/master/.env.example)
 
 5. Run backend
 
