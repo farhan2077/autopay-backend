@@ -76,6 +76,17 @@ export async function addUser(req: express.Request, res: express.Response) {
     const { name, address, phone, balance, vehicleType, vehicleId, tollRate } =
       req.body;
 
+    const user = await usersRepository.findOneBy({
+      vehicleId: vehicleId,
+    });
+
+    if (user) {
+      return res.status(400).json({
+        success: false,
+        message: "Vehicle is already registered",
+      });
+    }
+
     const newUser = new User();
     newUser.name = name;
     newUser.address = address;
