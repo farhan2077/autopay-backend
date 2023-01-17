@@ -125,13 +125,24 @@ exports.getUser = getUser;
 // @POST - baseUrl/users
 function addUser(req, res) {
     return __awaiter(this, void 0, void 0, function () {
-        var usersRepository, _a, name_1, address, phone, balance, vehicleType, vehicleId, tollRate, newUser, error_3;
+        var usersRepository, _a, name_1, address, phone, balance, vehicleType, vehicleId, tollRate, user, newUser, error_3;
         return __generator(this, function (_b) {
             switch (_b.label) {
                 case 0:
-                    _b.trys.push([0, 2, , 3]);
+                    _b.trys.push([0, 3, , 4]);
                     usersRepository = datasource_1.datasource.getRepository(entities_1.User);
                     _a = req.body, name_1 = _a.name, address = _a.address, phone = _a.phone, balance = _a.balance, vehicleType = _a.vehicleType, vehicleId = _a.vehicleId, tollRate = _a.tollRate;
+                    return [4 /*yield*/, usersRepository.findOneBy({
+                            vehicleId: vehicleId,
+                        })];
+                case 1:
+                    user = _b.sent();
+                    if (user) {
+                        return [2 /*return*/, res.status(400).json({
+                                success: false,
+                                message: "Vehicle is already registered",
+                            })];
+                    }
                     newUser = new entities_1.User();
                     newUser.name = name_1;
                     newUser.address = address;
@@ -141,21 +152,21 @@ function addUser(req, res) {
                     newUser.vehicleId = vehicleId;
                     newUser.tollRate = tollRate;
                     return [4 /*yield*/, usersRepository.save(newUser)];
-                case 1:
+                case 2:
                     _b.sent();
                     return [2 /*return*/, res.status(200).json({
                             success: true,
                             message: "New user added",
                             data: newUser,
                         })];
-                case 2:
+                case 3:
                     error_3 = _b.sent();
                     console.error(error_3);
                     return [2 /*return*/, res.status(500).json({
                             success: false,
                             message: "Something want wrong!",
                         })];
-                case 3: return [2 /*return*/];
+                case 4: return [2 /*return*/];
             }
         });
     });
