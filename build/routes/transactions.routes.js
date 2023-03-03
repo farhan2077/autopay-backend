@@ -8,5 +8,8 @@ transactionRouter
     .route("/")
     .get(controllers_1.getAllTransactionsController)
     .post(controllers_1.addTransactionController);
-transactionRouter.route("/:vehicleId").get(controllers_1.getTransactionController);
+transactionRouter
+    .route("/:id")
+    .get(controllers_1.getTransactionController)
+    .delete(controllers_1.deleteTransactionController);
 exports.default = transactionRouter;

@@ -36,7 +36,7 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
     }
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.addTransaction = exports.getTransaction = exports.getAllTransactions = void 0;
+exports.deleteTransaction = exports.addTransaction = exports.getTransaction = exports.getAllTransactions = void 0;
 var datasource_1 = require("../utils/datasource");
 var entities_1 = require("../entities");
 // @GET - baseUrl/transactions
@@ -49,7 +49,7 @@ function getAllTransactions(req, res) {
                     _a.trys.push([0, 2, , 3]);
                     transactionsRepository = datasource_1.datasource.getRepository(entities_1.Transaction);
                     return [4 /*yield*/, transactionsRepository.find({
-                            select: ["createdAt", "paymentStatus"],
+                            select: ["id", "createdAt", "paymentStatus"],
                             relations: ["user"],
                             order: {
                                 createdAt: "DESC",
@@ -84,7 +84,7 @@ function getTransaction(req, res) {
                 case 0:
                     _a.trys.push([0, 2, , 3]);
                     usersRepository = datasource_1.datasource.getRepository(entities_1.User);
-                    vehicleId = req.params.vehicleId;
+                    vehicleId = req.params.id;
                     return [4 /*yield*/, usersRepository.findOne({
                             select: {
                                 id: true,
@@ -191,3 +191,42 @@ function addTransaction(req, res) {
     });
 }
 exports.addTransaction = addTransaction;
+// @DELETE - baseUrl/transactions/:transactionId
+function deleteTransaction(req, res) {
+    return __awaiter(this, void 0, void 0, function () {
+        var transactionsRepository, transactionId, transaction, error_4;
+        return __generator(this, function (_a) {
+            switch (_a.label) {
+                case 0:
+                    _a.trys.push([0, 2, , 3]);
+                    transactionsRepository = datasource_1.datasource.getRepository(entities_1.Transaction);
+                    transactionId = req.params.id;
+                    return [4 /*yield*/, transactionsRepository.findOneBy({
+                            id: transactionId,
+                        })];
+                case 1:
+                    transaction = _a.sent();
+                    if (!transaction) {
+                        return [2 /*return*/, res.status(400).json({
+                                success: false,
+                                message: "Transaction not found",
+                            })];
+                    }
+                    transactionsRepository.delete(transaction);
+                    return [2 /*return*/, res.status(200).json({
+                            success: true,
+                            message: "Transaction deleted",
+                        })];
+                case 2:
+                    error_4 = _a.sent();
+                    console.error(error_4);
+                    return [2 /*return*/, res.status(500).json({
+                            success: false,
+                            message: "Something want wrong!",
+                        })];
+                case 3: return [2 /*return*/];
+            }
+        });
+    });
+}
+exports.deleteTransaction = deleteTransaction;

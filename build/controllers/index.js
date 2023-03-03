@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.addTransactionController = exports.getTransactionController = exports.getAllTransactionsController = exports.updateUserBalanceController = exports.deleteUserController = exports.updateUserController = exports.addUserController = exports.getUserController = exports.getAllUsersController = void 0;
+exports.deleteTransactionController = exports.addTransactionController = exports.getTransactionController = exports.getAllTransactionsController = exports.updateUserBalanceController = exports.deleteUserController = exports.updateUserController = exports.addUserController = exports.getUserController = exports.getAllUsersController = void 0;
 var users_controller_1 = require("./users.controller");
 Object.defineProperty(exports, "getAllUsersController", { enumerable: true, get: function () { return users_controller_1.getAllUsers; } });
 Object.defineProperty(exports, "getUserController", { enumerable: true, get: function () { return users_controller_1.getUser; } });
@@ -12,3 +12,4 @@ var transactions_controller_1 = require("./transactions.controller");
 Object.defineProperty(exports, "getAllTransactionsController", { enumerable: true, get: function () { return transactions_controller_1.getAllTransactions; } });
 Object.defineProperty(exports, "getTransactionController", { enumerable: true, get: function () { return transactions_controller_1.getTransaction; } });
 Object.defineProperty(exports, "addTransactionController", { enumerable: true, get: function () { return transactions_controller_1.addTransaction; } });
+Object.defineProperty(exports, "deleteTransactionController", { enumerable: true, get: function () { return transactions_controller_1.deleteTransaction; } });

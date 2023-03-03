@@ -5,6 +5,7 @@ import {
   getAllTransactionsController,
   getTransactionController,
   addTransactionController,
+  deleteTransactionController,
 } from "../controllers";
 
 // baseUrl/transactions
@@ -13,6 +14,9 @@ transactionRouter
   .get(getAllTransactionsController)
   .post(addTransactionController);
 
-transactionRouter.route("/:vehicleId").get(getTransactionController);
+transactionRouter
+  .route("/:id")
+  .get(getTransactionController)
+  .delete(deleteTransactionController);
 
 export default transactionRouter;
