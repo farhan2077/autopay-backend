@@ -27,7 +27,7 @@ export async function getAllTransactions(
     console.error(error);
     return res.status(500).json({
       success: false,
-      error: "Swomthing went wrong",
+      error: "Something went wrong",
     });
   }
 }
@@ -82,7 +82,7 @@ export async function getTransaction(
 
     return res.status(500).json({
       success: false,
-      message: "Something want wrong!",
+      message: "Something went wrong",
     });
   }
 }
